@@ -92,7 +92,7 @@ public class GUI implements Runnable {
 
 		init();
 
-		int fps = 12;
+		int fps = 10;
 		double timePerTick = 1000000000 / fps;
 		double delta = 0;
 		long now;
@@ -168,7 +168,7 @@ public class GUI implements Runnable {
 	}
 	
 	private void drawFruit(Graphics g) {
-		g.setColor(new Color(106, 132, 186));
+		g.setColor(new Color(237, 106, 134));
 		drawCell(g, (int)game.getFruit().getX(), (int)game.getFruit().getY(), true);
 	}
 	
