@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Point;
+import java.util.Iterator;
 
 public class Game {
 
@@ -61,6 +62,69 @@ public class Game {
 		fruit = new Fruit(rand_x, rand_y);
 	}
 
+	public void startTraining() {
+		int num_iter = 10;
+		for (int i = 0; i < num_iter; i++) {
+			initGame();
+			double[] grid = getGrid();
+			snake.createBrain(grid);
+			double[] output = snake.getBrain().calculate(grid);
+			int choice = 0;
+			double max = output[0];
+			for (int j = 1; j < output.length; j++) {
+				if(output[i] > max) max = output[i];
+				choice = i;
+			}
+			if(choice == 0)
+				snake.setDirection('w');
+			if(choice == 1)
+				snake.setDirection('a');
+			if(choice == 2)
+				snake.setDirection('s');
+			if(choice == 3)
+				snake.setDirection('d');
+		}
+	}
+	
+	public double[] getGrid() {
+		double[] grid = new double[grid_width*grid_height];
+		
+		grid[grid_width * snake.getHead().getY() + snake.getHead().getX()] = 1;
+		
+		for (int i = 0; i < snake.getBody().size()-1; i++) {
+			grid[grid_width * snake.getBody().get(i).getY() + snake.getBody().get(i).getX()] = 2;
+		}
+		
+		grid[grid_width * fruit.getY() + fruit.getX()] = 3;
+		
+		return grid;
+	}
+	
+//	public int[] distanceFromWall() {
+//		int[] distances = new int[8];
+//		Point snake_pos = new Point(snake.getHead().getX(), snake.getHead().getY());
+//		
+//		distances[0] = (int) snake_pos.getY(); 				 // north
+//		distances[1] = grid_width - (int) snake_pos.getX();  // east
+//		distances[2] = grid_height - (int) snake_pos.getY(); // south
+//		distances[3] = (int) snake_pos.getX();				 // west
+//		
+//		distances[4] = distance(snake_pos, )				 // north-east
+//		distances[5] = grid_width - (int) snake_pos.getX();  // east
+//		distances[6] = grid_height - (int) snake_pos.getY(); // south
+//		distances[7] = (int) snake_pos.getX();				 // west
+//		
+//		
+//		
+//		return distances;
+//	}
+	
+	public double distance(Point p0, Point p1) {
+		double dx = p0.getX() - p1.getX();
+		double dy = p0.getY() - p1.getY();
+		return Math.sqrt(dx*dx + dy*dy);
+	}
+	
 	// Getters and setters
 	
 	public int getGrid_width() {

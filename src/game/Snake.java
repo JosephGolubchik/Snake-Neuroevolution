@@ -7,10 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import neural_network.NeuralNetwork;
+
 public class Snake {
 	
 	private ArrayList<SnakeNode> body;
 	private char direction;
+	private NeuralNetwork brain;
 	
 	public Snake(int x, int y) {
 		body = new ArrayList<SnakeNode>();
@@ -21,6 +24,14 @@ public class Snake {
 		return body.iterator();
 	}
 	
+	public void createBrain(double[] input) {
+		brain = new NeuralNetwork(input.length, 10, 4);
+	}
+	
+	public NeuralNetwork getBrain() {
+		return brain;
+	}
+
 	public void move() {
 		SnakeNode head = body.get(body.size()-1);
 		if(direction == 'w') { // up
