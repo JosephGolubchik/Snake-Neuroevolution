@@ -13,7 +13,7 @@ public class Game {
 	private int[] scores;
 	private int score;
 	private Fruit fruit;
-	private final int POP_SIZE = 5;
+	private final int POP_SIZE = 20;
 	private boolean running;
 	private long start_time;
 
@@ -47,7 +47,7 @@ public class Game {
 			}
 		}
 	}
-	
+
 	private int maxInArray(int[] arr) {
 		int max = 0;
 		for(int i : arr) {
@@ -55,7 +55,7 @@ public class Game {
 		}
 		return max;
 	}
-	
+
 	private void initGame() {
 		start_time = System.currentTimeMillis();
 		snake_id++;
@@ -75,7 +75,7 @@ public class Game {
 	}
 
 	public void checkGameOver() {
-		if(checkOutOfGrid() || snake.collision() || System.currentTimeMillis() - start_time > 5000) {
+		if(checkOutOfGrid() || snake.collision() || System.currentTimeMillis() - start_time > 500) {
 			if(snake_id < snakes.length - 1) {
 				scores[snake_id] = score;
 				initGame();
@@ -85,8 +85,9 @@ public class Game {
 					System.out.println(Arrays.toString(scores));
 					createSnakes();
 					snake_id = 0;
+					initGame();
 				}
-//				running = false;
+				//				running = false;
 			}
 		}
 	}
@@ -121,20 +122,22 @@ public class Game {
 	}
 
 	public void moveWithBrain() {
-		double[] grid = getGrid();
-		double[] output = snake.getBrain().calculate(grid);
-		int choice = 0;
-		for (int i = 1; i < output.length; i++) {
-			if(output[i] > output[choice]) choice = i;
+		if(!checkOutOfGrid()) {
+			double[] grid = getGrid();
+			double[] output = snake.getBrain().calculate(grid);
+			int choice = 0;
+			for (int i = 1; i < output.length; i++) {
+				if(output[i] > output[choice]) choice = i;
+			}
+			if(choice == 0)
+				snake.setDirection('w');
+			if(choice == 1)
+				snake.setDirection('a');
+			if(choice == 2)
+				snake.setDirection('s');
+			if(choice == 3)
+				snake.setDirection('d');
 		}
-		if(choice == 0)
-			snake.setDirection('w');
-		if(choice == 1)
-			snake.setDirection('a');
-		if(choice == 2)
-			snake.setDirection('s');
-		if(choice == 3)
-			snake.setDirection('d');
 	}
 
 
