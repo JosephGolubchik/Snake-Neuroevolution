@@ -92,7 +92,7 @@ public class GUI implements Runnable {
 
 		init();
 
-		int fps = 10;
+		int fps = 12;
 		double timePerTick = 1000000000 / fps;
 		double delta = 0;
 		long now;

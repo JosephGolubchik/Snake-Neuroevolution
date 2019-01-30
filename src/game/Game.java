@@ -19,11 +19,14 @@ public class Game {
 	private void initGame() {
 		snake = new Snake(grid_width/2, grid_height/2);
 		createFruit();
+		double[] grid = getGrid();
+		snake.createBrain(grid);
 		score = 0;
 	}
 	
 	public void tick() {
 		checkGameOver();
+		moveWithBrain();
 		snake.move();
 		updateFruit();
 	}
@@ -62,28 +65,23 @@ public class Game {
 		fruit = new Fruit(rand_x, rand_y);
 	}
 
-	public void startTraining() {
-		int num_iter = 10;
-		for (int i = 0; i < num_iter; i++) {
-			initGame();
-			double[] grid = getGrid();
-			snake.createBrain(grid);
-			double[] output = snake.getBrain().calculate(grid);
-			int choice = 0;
-			double max = output[0];
-			for (int j = 1; j < output.length; j++) {
-				if(output[i] > max) max = output[i];
-				choice = i;
-			}
-			if(choice == 0)
-				snake.setDirection('w');
-			if(choice == 1)
-				snake.setDirection('a');
-			if(choice == 2)
-				snake.setDirection('s');
-			if(choice == 3)
-				snake.setDirection('d');
+	public void moveWithBrain() {
+		double[] grid = getGrid();
+		snake.createBrain(grid);
+		double[] output = snake.getBrain().calculate(grid);
+		int choice = 0;
+		for (int i = 1; i < output.length; i++) {
+			if(output[i] > output[choice]) choice = i;
 		}
+		if(choice == 0)
+			snake.setDirection('w');
+		if(choice == 1)
+			snake.setDirection('a');
+		if(choice == 2)
+			snake.setDirection('s');
+		if(choice == 3)
+			snake.setDirection('d');
+		System.out.println("choice: " + choice);
 	}
 	
 	public double[] getGrid() {
