@@ -28,6 +28,12 @@ public class Snake {
 		brain = new NeuralNetwork(input.length, 10, 4);
 	}
 	
+	public void reset(int x, int y) {
+		body.clear();
+		body = new ArrayList<SnakeNode>();
+		body.add(new SnakeNode(x, y));
+	}
+	
 	public NeuralNetwork getBrain() {
 		return brain;
 	}
