@@ -33,27 +33,22 @@ public class Game {
 	}
 
 	private void createSnakes() {
+		int best_snake_id = maxIndexArray(scores);
 		for(int i = 0; i < snakes.length; i++) {
-			double survivalProb = scores[i];
-			if(maxInArray(scores) == 0) survivalProb = 0;
-			else survivalProb = (double)scores[i]/(double)maxInArray(scores);
-			if(Math.random() > survivalProb) {
-				snakes[i] = new Snake(grid_width/2, grid_height/2);
-				snake = snakes[i];
-				snake.createBrain(getGrid());
-			}
-			else {
-				snakes[i].getBrain().mutate(0.1);
-			}
+			snakes[i] = snakes[best_snake_id];
+		}
+		for(int i = 0; i < snakes.length; i++) {
+			snakes[i].getBrain().mutate(0.1);
+			snakes[i].reset(grid_width/2, grid_height/2);
 		}
 	}
 
-	private int maxInArray(int[] arr) {
-		int max = 0;
-		for(int i : arr) {
-			if(i > max) max = i;
+	private int maxIndexArray(int[] arr) {
+		int index = 0;
+		for(int i = 0; i < arr.length; i++) {
+			if(arr[i] > arr[index]) index = i;
 		}
-		return max;
+		return index;
 	}
 
 	private void initGame() {
@@ -75,7 +70,7 @@ public class Game {
 	}
 
 	public void checkGameOver() {
-		if(checkOutOfGrid() || snake.collision() || System.currentTimeMillis() - start_time > 500) {
+		if(checkOutOfGrid() || snake.collision() || System.currentTimeMillis() - start_time > 1000) {
 			if(snake_id < snakes.length - 1) {
 				scores[snake_id] = score;
 				initGame();
