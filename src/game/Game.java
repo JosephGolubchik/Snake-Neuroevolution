@@ -15,6 +15,7 @@ public class Game {
 	private Fruit fruit;
 	private final int POP_SIZE = 5;
 	private boolean running;
+	private long start_time;
 
 	public Game(int grid_width, int grid_height) {
 		this.grid_width = grid_width;
@@ -24,18 +25,43 @@ public class Game {
 		scores = new int[POP_SIZE];
 		for(int i = 0; i < snakes.length; i++) {
 			snakes[i] = new Snake(grid_width/2, grid_height/2);
+			snake = snakes[i];
+			snake.createBrain(getGrid());
 		}
 		snake = snakes[0];
 		initGame();
 	}
 
+	private void createSnakes() {
+		for(int i = 0; i < snakes.length; i++) {
+			double survivalProb = scores[i];
+			if(maxInArray(scores) == 0) survivalProb = 0;
+			else survivalProb = (double)scores[i]/(double)maxInArray(scores);
+			if(Math.random() > survivalProb) {
+				snakes[i] = new Snake(grid_width/2, grid_height/2);
+				snake = snakes[i];
+				snake.createBrain(getGrid());
+			}
+			else {
+				snakes[i].getBrain().mutate(0.1);
+			}
+		}
+	}
+	
+	private int maxInArray(int[] arr) {
+		int max = 0;
+		for(int i : arr) {
+			if(i > max) max = i;
+		}
+		return max;
+	}
+	
 	private void initGame() {
+		start_time = System.currentTimeMillis();
 		snake_id++;
 		running = true;
 		snake = snakes[snake_id];
 		createFruit();
-		double[] grid = getGrid();
-		snake.createBrain(grid);
 		score = 0;
 	}
 
@@ -49,14 +75,18 @@ public class Game {
 	}
 
 	public void checkGameOver() {
-		if(checkOutOfGrid() || snake.collision()) {
+		if(checkOutOfGrid() || snake.collision() || System.currentTimeMillis() - start_time > 5000) {
 			if(snake_id < snakes.length - 1) {
 				scores[snake_id] = score;
 				initGame();
 			}
 			else {
-				running = false;
-				System.out.println(Arrays.toString(scores));
+				if(running) {
+					System.out.println(Arrays.toString(scores));
+					createSnakes();
+					snake_id = 0;
+				}
+//				running = false;
 			}
 		}
 	}
@@ -118,7 +148,8 @@ public class Game {
 			grid[grid_width * snake.getBody().get(i).getY() + snake.getBody().get(i).getX()] = 2;
 		}
 
-		grid[grid_width * fruit.getY() + fruit.getX()] = 3;
+		if(fruit != null)
+			grid[grid_width * fruit.getY() + fruit.getX()] = 3;
 
 		return grid;
 	}

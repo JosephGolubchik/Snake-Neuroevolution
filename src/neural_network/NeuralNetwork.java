@@ -42,7 +42,7 @@ public class NeuralNetwork {
 		for (int layer = 1; layer < NETWORK_SIZE; layer++) {
 			for(int neuron = 0; neuron < LAYER_SIZES[layer]; neuron++) {
 				
-				double sum = bias[layer][neuron];;
+				double sum = bias[layer][neuron];
 				for(int prevNeuron = 0; prevNeuron < LAYER_SIZES[layer-1]; prevNeuron++) {
 					sum += output[layer-1][prevNeuron] * weights[layer][neuron][prevNeuron];
 				}
@@ -57,12 +57,33 @@ public class NeuralNetwork {
 		return 1d/(1 + Math.exp(-x));
 	}
 	
+	public void mutate(double prob) {
+		for (int layer = 1; layer < NETWORK_SIZE; layer++) {
+			for(int neuron = 0; neuron < LAYER_SIZES[layer]; neuron++) {
+				
+				if(Math.random() <= prob)
+					bias[layer][neuron] += Math.random() - 0.5;
+				
+				for(int prevNeuron = 0; prevNeuron < LAYER_SIZES[layer-1]; prevNeuron++) {
+					if(Math.random() <= prob)
+						weights[layer][neuron][prevNeuron] += Math.random() - 0.5;
+				}
+				
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 		NeuralNetwork net = new NeuralNetwork(4,2,3,4);
 		double[] output = net.calculate(0.2,0.1,0.8,0.6);
 		System.out.println(Arrays.toString(output));
 		output = net.calculate(0.2,0.1,0.8,0.6);
 		System.out.println(Arrays.toString(output));
+		output = net.calculate(0.2,0.1,0.8,0.6);
+		System.out.println(Arrays.toString(output));
+		for (int i = 0; i < 10; i++) {
+			net.mutate(1);
+		}
 		output = net.calculate(0.2,0.1,0.8,0.6);
 		System.out.println(Arrays.toString(output));
 	}
