@@ -61,5 +61,9 @@ public class NeuralNetwork {
 		NeuralNetwork net = new NeuralNetwork(4,2,3,4);
 		double[] output = net.calculate(0.2,0.1,0.8,0.6);
 		System.out.println(Arrays.toString(output));
+		output = net.calculate(0.2,0.1,0.8,0.6);
+		System.out.println(Arrays.toString(output));
+		output = net.calculate(0.2,0.1,0.8,0.6);
+		System.out.println(Arrays.toString(output));
 	}
 }

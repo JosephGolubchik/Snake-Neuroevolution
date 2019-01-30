@@ -67,7 +67,6 @@ public class Game {
 
 	public void moveWithBrain() {
 		double[] grid = getGrid();
-		snake.createBrain(grid);
 		double[] output = snake.getBrain().calculate(grid);
 		int choice = 0;
 		for (int i = 1; i < output.length; i++) {
