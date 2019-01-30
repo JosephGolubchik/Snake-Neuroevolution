@@ -23,7 +23,7 @@ public class GUI implements Runnable {
 	private BufferStrategy bs;
 	private Graphics g;
 	
-	private final int GRID_SIZE = 20;
+	private final int GRID_SIZE = 6;
 
 	// Game
 	Game game;
