@@ -26,10 +26,10 @@ public class NeuralNetwork {
 		
 		for (int i = 0; i < NETWORK_SIZE; i++) {
 			this.output[i] = new double[LAYER_SIZES[i]];
-			this.bias[i] = NetworkTools.createRandomArray(LAYER_SIZES[i], 0.3, 0.7);
+			this.bias[i] = NetworkTools.createRandomArray(LAYER_SIZES[i], 0, 1);
 			
 			if(i > 0) {
-				this.weights[i] = NetworkTools.createRandomArray(LAYER_SIZES[i], LAYER_SIZES[i-1], -0.3, 0.5);
+				this.weights[i] = NetworkTools.createRandomArray(LAYER_SIZES[i], LAYER_SIZES[i-1], 0, 1);
 
 			}
 		}
@@ -75,7 +75,7 @@ public class NeuralNetwork {
 	
 	public static void main(String[] args) {
 		NeuralNetwork net = new NeuralNetwork(4,2,3,4);
-		double[] output = net.calculate(0.2,0.1,0.8,0.6);
+		double[] output = net.calculate(0.8,0.1,0.1,0.6);
 		System.out.println(Arrays.toString(output));
 		output = net.calculate(0.2,0.1,0.8,0.6);
 		System.out.println(Arrays.toString(output));

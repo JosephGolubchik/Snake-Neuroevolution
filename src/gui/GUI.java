@@ -23,7 +23,7 @@ public class GUI implements Runnable {
 	private BufferStrategy bs;
 	private Graphics g;
 	
-	private final int GRID_SIZE = 10;
+	private final int GRID_SIZE = 15;
 
 	// Game
 	Game game;
@@ -92,7 +92,7 @@ public class GUI implements Runnable {
 
 		init();
 
-		int fps = 10;
+		int fps = 15;
 		double timePerTick = 1000000000 / fps;
 		double delta = 0;
 		long now;

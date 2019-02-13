@@ -13,7 +13,7 @@ public class Game {
 	private int[] scores;
 	private int score;
 	private Fruit fruit;
-	private final int POP_SIZE = 20;
+	private final int POP_SIZE = 5;
 	private boolean running;
 	private long start_time;
 
@@ -34,8 +34,9 @@ public class Game {
 
 	private void createSnakes() {
 		int best_snake_id = maxIndexArray(scores);
+		Snake best_snake = snakes[best_snake_id];
 		for(int i = 0; i < snakes.length; i++) {
-			snakes[i] = snakes[best_snake_id];
+			snakes[i] = best_snake;
 		}
 		for(int i = 0; i < snakes.length; i++) {
 			snakes[i].getBrain().mutate(0.1);
