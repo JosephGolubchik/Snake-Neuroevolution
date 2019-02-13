@@ -66,6 +66,7 @@ public class Game {
 		if(running) {
 			moveWithBrain();
 			snake.move();
+//			System.out.println(snake.getHead().getX() + "," + snake.getHead().getY());
 			updateFruit();
 		}
 	}
@@ -78,9 +79,10 @@ public class Game {
 			}
 			else {
 				if(running) {
+					running = false;
 					System.out.println(Arrays.toString(scores));
 					createSnakes();
-					snake_id = 0;
+					snake_id = -1;
 					initGame();
 				}
 				//				running = false;
@@ -126,13 +128,13 @@ public class Game {
 				if(output[i] > output[choice]) choice = i;
 			}
 			if(choice == 0)
-				snake.setDirection('w');
+				if(snake.getDirection() != 's') snake.setDirection('w');
 			if(choice == 1)
-				snake.setDirection('a');
+				if(snake.getDirection() != 'd') snake.setDirection('a');
 			if(choice == 2)
-				snake.setDirection('s');
+				if(snake.getDirection() != 'w') snake.setDirection('s');
 			if(choice == 3)
-				snake.setDirection('d');
+				if(snake.getDirection() != 'a') snake.setDirection('d');
 		}
 	}
 
